@@ -29,6 +29,24 @@ python3 -m http.server 8000 --bind 127.0.0.1
 - `style.css`: 見た目とスマートフォン向けのレイアウト
 - `app.js`: タスク追加・完了切り替え・削除の処理
 
+## 自動テスト
+
+GitHub の Actions にある **ToDo tests** が、`main` への更新とプルリクエストで実行されます。実行名をクリックすると、各ステップの進捗とログを確認できます。緑のチェックは成功、赤い×は失敗、黄色は待機中または実行中です。
+
+実際の Chromium で追加、完了切り替え、削除、入力チェック、長文のスマートフォン表示を検証します。テスト用ツールはアプリ本体の起動には不要です。公開処理は別の `pages build and deployment` が担当しており、現時点ではテスト成功を公開条件にはしていません。
+
+ローカルで実行する場合（Python 3.12）：
+
+```sh
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r tests/requirements.txt
+python -m playwright install chromium
+python -m unittest discover -s tests -v
+```
+
+Windows では仮想環境の有効化に `.venv\Scripts\activate` を使います。Linux でブラウザ用のシステムライブラリが不足する場合は、管理者権限のある環境で `python -m playwright install --with-deps chromium` を実行してください。
+
 ## 手動での動作確認
 
 1. 最初は空の一覧と「未完了 0 件 / 全 0 件」が表示されることを確認します。
